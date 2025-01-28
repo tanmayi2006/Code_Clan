@@ -7,11 +7,13 @@ import ResetPassword from './pages/ResetPassword';
 import './index.css';
 import Home from './pages/Home';
 import Host from './pages/Host';
+import Past from './pages/Past';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/past" element={<Past/>} />
         <Route path="/host" element={<Host />} />
         <Route path="/home" element={<Home />} /> {/* Updated to render Home component */}
         <Route path="/signup" element={<SignUp />} />
