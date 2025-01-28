@@ -15,7 +15,11 @@ import {
   Clock
 } from 'lucide-react';
 
+<<<<<<< HEAD
 function Home() {
+=======
+function App() {
+>>>>>>> 8de95e6 (backend with mongo)
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentChannel, setCurrentChannel] = useState('Main Channel');
   const [listeners, setListeners] = useState(342);
@@ -402,4 +406,8 @@ function Home() {
   );
 }
 
+<<<<<<< HEAD
 export default Home;
+=======
+export default App;
+>>>>>>> 8de95e6 (backend with mongo)
