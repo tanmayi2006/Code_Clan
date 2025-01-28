@@ -42,16 +42,16 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 to-indigo-800 flex items-center justify-center p-4">
-      <div className="bg-white/10 backdrop-blur-lg rounded-xl p-8 w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-white mb-6 text-center">Create an Account</h2>
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0A1A] to-[#0D152C] flex items-center justify-center p-4">
+      <div className="bg-[#0D1729] backdrop-blur-lg rounded-xl p-8 w-full max-w-md">
+        <h2 className="text-2xl font-semibold text-[#28D3D1] mb-6 text-center">Create an Account</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-purple-200 mb-1">Email</label>
+            <label className="block text-sm font-medium text-[#28D3D1] mb-1">Email</label>
             <input
               type="email"
-              className="w-full px-4 py-2 rounded-lg bg-white/20 border border-purple-300/30 text-black placeholder-purple-200/70 focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="w-full px-4 py-2 rounded-lg bg-[#0D1729] border border-[#28D3D1]/30 text-[#28D3D1] placeholder-[#28D3D1]/70 focus:outline-none focus:ring-2 focus:ring-[#28D3D1]"
               placeholder="you@example.com"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -59,10 +59,10 @@ const SignUp = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-purple-200 mb-1">Password</label>
+            <label className="block text-sm font-medium text-[#28D3D1] mb-1">Password</label>
             <input
               type="password"
-              className="w-full px-4 py-2 rounded-lg bg-white/20 border border-purple-300/30 text-black placeholder-purple-200/70 focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="w-full px-4 py-2 rounded-lg bg-[#0D1729] border border-[#28D3D1]/30 text-[#28D3D1] placeholder-[#28D3D1]/70 focus:outline-none focus:ring-2 focus:ring-[#28D3D1]"
               placeholder="••••••••"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -71,7 +71,7 @@ const SignUp = () => {
           
           <button
             type="submit"
-            className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition duration-200"
+            className="w-full py-3 px-4 bg-[#28D3D1] hover:bg-[#0D152C] text-[#0A0A1A] font-semibold rounded-lg transition duration-200"
           >
             Sign Up
           </button>
@@ -89,9 +89,9 @@ const SignUp = () => {
           </div>
         )}
         
-        <p className="mt-6 text-center text-purple-200">
+        <p className="mt-6 text-center text-[#28D3D1]">
           Already have an account?{' '}
-          <Link to="/login" className="text-purple-400 hover:text-purple-300 font-semibold">
+          <Link to="/login" className="text-[#28D3D1] hover:text-[#0A0A1A] font-semibold">
             Log in
           </Link>
         </p>
