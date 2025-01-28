@@ -15,7 +15,7 @@ import {
   Clock
 } from 'lucide-react';
 
-function App() {
+function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentChannel, setCurrentChannel] = useState('Main Channel');
   const [listeners, setListeners] = useState(342);
@@ -402,4 +402,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
