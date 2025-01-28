@@ -16,10 +16,14 @@ import {
 } from 'lucide-react';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 function Home() {
 =======
 function App() {
 >>>>>>> 8de95e6 (backend with mongo)
+=======
+function Home() {
+>>>>>>> 306554cd582c78b8e67cd31fe228cf8c611a61ac
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentChannel, setCurrentChannel] = useState('Main Channel');
   const [listeners, setListeners] = useState(342);
@@ -407,7 +411,11 @@ function App() {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export default Home;
 =======
 export default App;
 >>>>>>> 8de95e6 (backend with mongo)
+=======
+export default Home;
+>>>>>>> 306554cd582c78b8e67cd31fe228cf8c611a61ac
