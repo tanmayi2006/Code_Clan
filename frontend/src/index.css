@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .rotate-y-\[-20deg\] {
+    transform: rotateY(-20deg);
+  }
+  
+  .rotate-y-\[-30deg\] {
+    transform: rotateY(-30deg);
+  }
+  
+  .rotate-x-\[10deg\] {
+    transform: rotateX(10deg);
+  }

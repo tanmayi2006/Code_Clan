@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/user');
 const loginRoutes = require('./routes/login');
 const forgotPasswordRoutes = require('./routes/forgotPassword'); // Import the forgot password routes
+require('dotenv').config(); // Load environment variables from .env file
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -14,7 +15,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/project', {
+mongoose.connect(process.env.MONGODB_URI, { // Use the environment variable for the connection string
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
