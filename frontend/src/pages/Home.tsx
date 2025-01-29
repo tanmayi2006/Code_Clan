@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
 import { 
-  Radio, 
-  Play, 
-  Pause, 
-  Users, 
-  ChevronDown,
-  Send,
-  AudioWaveform as Waveform,
-  X,
-  MessageSquare,
-  Plus,
-  UserPlus,
-  ChevronRight,
-  Clock
+  Radio, Play, Pause, Users, ChevronDown, Send, 
+  AudioWaveform as Waveform, X, MessageSquare, Plus, 
+  UserPlus, ChevronRight, Clock, Music2, Mic2, BookOpen, 
+  PartyPopper, Youtube, AlignJustify as Spotify, Calendar, ChevronLeft
 } from 'lucide-react';
 
-function Home() {
+function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentChannel, setCurrentChannel] = useState('Main Channel');
   const [listeners, setListeners] = useState(342);
@@ -28,6 +19,8 @@ function Home() {
   const [customChannel, setCustomChannel] = useState(false);
   const [showJoinRequest, setShowJoinRequest] = useState(false);
   const [joinRequestMessage, setJoinRequestMessage] = useState('');
+  const [selectedTypes, setSelectedTypes] = useState(['music']);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const channels = [
     { name: 'Main Channel', frequency: '98.5' },
@@ -35,6 +28,35 @@ function Home() {
     { name: 'Campus News', frequency: '95.7' },
     { name: 'Late Night', frequency: '103.1' }
   ];
+  const ShowTypeIcon = ({ type, size = 16, className = "" }) => {
+    switch (type) {
+      case 'music':
+        return <Music2 size={size} className={className} />;
+      case 'podcast':
+        return <Mic2 size={size} className={className} />;
+      case 'story':
+        return <BookOpen size={size} className={className} />;
+      case 'event':
+        return <PartyPopper size={size} className={className} />;
+      default:
+        return null;
+    }
+  };
+
+  const showTypes = [
+    { id: 'music', label: 'Music' },
+    { id: 'podcast', label: 'Podcast' },
+    { id: 'story', label: 'Stories' },
+    { id: 'event', label: 'Events' }
+  ];
+
+  const toggleShowType = (typeId) => {
+    setSelectedTypes(prev => 
+      prev.includes(typeId) 
+        ? prev.filter(t => t !== typeId)
+        : [...prev, typeId]
+    );
+  };
 
   const comments = [
     { user: 'Alex', text: 'Loving this track! 🎵', time: '2m ago' },
@@ -56,7 +78,12 @@ function Home() {
       date: "March 15, 2024",
       duration: "2h 15m",
       thumbnail: "https://images.unsplash.com/photo-1511735111819-9a3f7709049c?auto=format&fit=crop&q=80&w=400",
-      listeners: 1243
+      listeners: 1243,
+      type: 'music',
+      links: {
+        youtube: "https://youtube.com/watch?v=example1",
+        spotify: "https://open.spotify.com/track/example1"
+      }
     },
     {
       id: 2,
@@ -65,7 +92,12 @@ function Home() {
       date: "March 14, 2024",
       duration: "1h 45m",
       thumbnail: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&q=80&w=400",
-      listeners: 892
+      listeners: 892,
+      type: 'music',
+      links: {
+        youtube: "https://youtube.com/watch?v=example2",
+        spotify: "https://open.spotify.com/track/example2"
+      }
     },
     {
       id: 3,
@@ -74,9 +106,41 @@ function Home() {
       date: "March 13, 2024",
       duration: "2h",
       thumbnail: "https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?auto=format&fit=crop&q=80&w=400",
-      listeners: 1567
+      listeners: 1567,
+      type: 'podcast',
+      links: {
+        youtube: "https://youtube.com/watch?v=example3",
+        spotify: "https://open.spotify.com/episode/example3"
+      }
     }
   ];
+
+  const upcomingShows = [
+    {
+      id: 4,
+      title: "Tech Talk",
+      host: "Emily Parker",
+      date: "March 20, 2024",
+      time: "3:00 PM",
+      duration: "1h",
+      type: 'podcast',
+      thumbnail: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+      id: 5,
+      title: "Story Time",
+      host: "Mark Johnson",
+      date: "March 21, 2024",
+      time: "7:00 PM",
+      duration: "45m",
+      type: 'story',
+      thumbnail: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=400"
+    }
+  ];
+
+  const filteredUpcomingShows = upcomingShows.filter(show => 
+    selectedTypes.length === 0 || selectedTypes.includes(show.type)
+  );
 
   return (
     <div className="min-h-screen bg-[#0A0A1A] text-white overflow-x-hidden">
@@ -160,7 +224,6 @@ function Home() {
                         </button>
                         <button
                           onClick={() => {
-                            // Handle join request submission
                             setShowJoinRequest(false);
                             setJoinRequestMessage('');
                           }}
@@ -354,10 +417,26 @@ function Home() {
           <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-teal-400 text-transparent bg-clip-text">
             Past Shows
           </h2>
-          <button className="px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center gap-2 group">
-            See All Shows
-            <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </button>
+          <div className="flex items-center gap-4">
+            {/* Show Type Filters */}
+            <div className="flex items-center gap-2">
+              {showTypes.map(type => (
+                <button
+                  key={type.id}
+                  onClick={() => toggleShowType(type.id)}
+                  className={`px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-2
+                    ${selectedTypes.includes(type.id) ? 'bg-cyan-400/20 text-cyan-400' : 'bg-white/5 hover:bg-white/10'}`}
+                >
+                  <ShowTypeIcon type={type.id} size={16} />
+                  {type.label}
+                </button>
+              ))}
+            </div>
+            <button className="px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center gap-2 group">
+              See All Shows
+              <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -385,13 +464,105 @@ function Home() {
                 </div>
               </div>
               <div className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <ShowTypeIcon type={show.type} size={16} className="text-cyan-400" />
+                  <span className="text-sm text-cyan-400">
+                    {show.type.charAt(0).toUpperCase() + show.type.slice(1)}
+                  </span>
+                </div>
                 <h3 className="text-lg font-semibold mb-1 text-cyan-50">{show.title}</h3>
                 <p className="text-sm text-gray-400 mb-2">Hosted by {show.host}</p>
                 <p className="text-xs text-gray-500">{show.date}</p>
               </div>
+              <div className="px-4 pb-4 flex gap-2">
+                <button className="flex-1 py-2 rounded-lg bg-gradient-to-r from-cyan-500/20 to-teal-500/20 hover:from-cyan-500/30 hover:to-teal-500/30 border border-cyan-500/30 transition-all duration-300 text-sm">
+                  Listen to Recording
+                </button>
+                <a
+                  href={show.links.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 transition-all duration-300"
+                >
+                  <Youtube size={20} />
+                </a>
+                <a
+                  href={show.links.spotify}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 transition-all duration-300"
+                >
+                  <Spotify size={20} />
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      {/* Upcoming Shows Section */}
+      <section className="container mx-auto px-4 py-16 relative">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-teal-400 text-transparent bg-clip-text">
+            Upcoming Shows
+          </h2>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              {showTypes.map(type => (
+                <button
+                  key={type.id}
+                  onClick={() => toggleShowType(type.id)}
+                  className={`px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-2
+                    ${selectedTypes.includes(type.id) ? 'bg-cyan-400/20 text-cyan-400' : 'bg-white/5 hover:bg-white/10'}`}
+                >
+                  <ShowTypeIcon type={type.id} size={16} />
+                  {type.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredUpcomingShows.map((show) => (
+            <div 
+              key={show.id}
+              className="bg-white/5 backdrop-blur-lg rounded-xl border border-white/10 overflow-hidden hover:border-cyan-500/30 transition-all duration-300 group"
+            >
+              <div className="relative aspect-video overflow-hidden">
+                <img 
+                  src={show.thumbnail} 
+                  alt={show.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <Clock size={14} className="text-cyan-400" />
+                    <span>{show.duration}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-cyan-400">
+                    <Calendar size={14} />
+                    <span>{show.date}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <ShowTypeIcon type={show.type} size={16} className="text-cyan-400" />
+                  <span className="text-sm text-cyan-400">
+                    {show.type.charAt(0).toUpperCase() + show.type.slice(1)}
+                  </span>
+                </div>
+                <h3 className="text-lg font-semibold mb-1 text-cyan-50">{show.title}</h3>
+                <p className="text-sm text-gray-400 mb-2">Hosted by {show.host}</p>
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <Clock size={14} />
+                  <span>{show.time}</span>
+                </div>
+              </div>
               <div className="px-4 pb-4">
                 <button className="w-full py-2 rounded-lg bg-gradient-to-r from-cyan-500/20 to-teal-500/20 hover:from-cyan-500/30 hover:to-teal-500/30 border border-cyan-500/30 transition-all duration-300 text-sm">
-                  Listen to Recording
+                  Set Reminder
                 </button>
               </div>
             </div>
@@ -402,4 +573,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default App;
