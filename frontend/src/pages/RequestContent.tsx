@@ -72,7 +72,7 @@ const RequestContent = () => {
                         name="isEvent"
                         checked={isEvent}
                         onChange={() => setIsEvent(true)}
-                        className="text-[#28D3D1] focus:ring-[#28D3D1]"
+                        className="text-[#28D3D1] focus:ring-[#28D3D1] border-[#28D3D1] rounded"
                       />
                       <span className="text-white">Yes</span>
                     </label>
@@ -82,7 +82,7 @@ const RequestContent = () => {
                         name="isEvent"
                         checked={!isEvent}
                         onChange={() => setIsEvent(false)}
-                        className="text-[#28D3D1] focus:ring-[#28D3D1]"
+                        className="text-[#28D3D1] focus:ring-[#28D3D1] border-[#28D3D1] rounded"
                       />
                       <span className="text-white">No</span>
                     </label>
