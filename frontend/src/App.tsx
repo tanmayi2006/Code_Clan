@@ -8,11 +8,15 @@ import './index.css';
 import Home from './pages/Home';
 import Host from './pages/Host';
 import Past from './pages/Past';
+import AdminPanel from './pages/AdminPanel';
+import RequestContent from './pages/RequestContent';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+      <Route path="/admin" element={<AdminPanel/>} />
+      <Route path="/request" element={<RequestContent/>} />
         <Route path="/past" element={<Past/>} />
         <Route path="/host" element={<Host />} />
         <Route path="/home" element={<Home />} /> {/* Updated to render Home component */}
