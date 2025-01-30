@@ -6,7 +6,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-[#0A0A1A] border-b border-[#28D3D1]/20">
+    <header className="bg-[#0A0A1A] border-b border-[#28D3D1]/20 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo and site name */}
