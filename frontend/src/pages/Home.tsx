@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useRef,useEffect } from 'react';
 import { 
   Radio, Play, Pause, Users, ChevronDown, Send, 
   AudioWaveform as Waveform, X, MessageSquare, Plus, 
   UserPlus, ChevronRight, Clock, Music2, Mic2, BookOpen, 
   PartyPopper, Youtube, AlignJustify as Spotify, Calendar, ChevronLeft
 } from 'lucide-react';
+import { io } from "socket.io-client";
 
-function App() {
+const socket = io("http://localhost:5000");
+
+const Home: React.FC = () => {
+  
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentChannel, setCurrentChannel] = useState('Main Channel');
   const [listeners, setListeners] = useState(342);
@@ -42,6 +46,41 @@ function App() {
         return null;
     }
   };
+const audioRef = useRef<HTMLAudioElement | null>(null);
+  let peerConnection: RTCPeerConnection;
+  const config = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
+
+  useEffect(() => {
+    socket.on("offer", async (offer) => {
+      peerConnection = new RTCPeerConnection(config);
+
+      peerConnection.ontrack = (event) => {
+        if (audioRef.current) {
+          audioRef.current.srcObject = event.streams[0];
+        }
+      };
+
+      peerConnection.onicecandidate = (event) => {
+        if (event.candidate) {
+          socket.emit("candidate", event.candidate);
+        }
+      };
+
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+      const answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
+      socket.emit("answer", answer);
+    });
+
+    socket.on("candidate", (candidate) => {
+      peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+    });
+
+    return () => {
+      socket.off("offer");
+      socket.off("candidate");
+    };
+  }, []);
 
   const showTypes = [
     { id: 'music', label: 'Music' },
@@ -142,6 +181,7 @@ function App() {
     selectedTypes.length === 0 || selectedTypes.includes(show.type)
   );
 
+
   return (
     <div className="min-h-screen bg-[#0A0A1A] text-white overflow-x-hidden">
       <section className="min-h-screen relative">
@@ -183,15 +223,18 @@ function App() {
                     College Radio
                   </h1>
                   <p className="text-gray-400 text-xl mt-2 mb-6">Broadcasting live from campus</p>
-                  <button 
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    className="bg-gradient-to-r from-cyan-500 to-teal-500 px-12 py-4 rounded-full hover:from-cyan-400 hover:to-teal-400 transition-all duration-300 flex items-center gap-3 font-medium shadow-[0_0_25px_rgba(0,255,255,0.3)] mx-auto text-lg"
-                  >
-                    {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-                    {isPlaying ? 'Stop' : 'Play'}
-                  </button>
-                  {/* Listeners Count */}
-                  <div className="flex items-center justify-center gap-2 mt-4">
+      
+      <button 
+  onClick={() => setIsPlaying(!isPlaying)}
+  className="bg-gradient-to-r from-cyan-500 to-teal-500 px-12 py-4 rounded-full hover:from-cyan-400 hover:to-teal-400 transition-all duration-300 flex items-center gap-3 font-medium shadow-[0_0_25px_rgba(0,255,255,0.3)] mx-auto text-lg"
+>
+  {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+  {isPlaying ? 'Stop' : 'Play'}
+</button>
+
+  <audio ref={audioRef} controls={false} autoPlay />
+{/* Listeners Count */}
+<div className="flex items-center justify-center gap-2 mt-4">
                     <Users size={16} className="text-cyan-400" />
                     <span className="text-sm text-gray-400">{listeners} listening</span>
                     <button
@@ -570,7 +613,8 @@ function App() {
         </div>
       </section>
     </div>
+    
   );
-}
+};
 
-export default App;
+export default Home;
