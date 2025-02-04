@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Clock, FileText, LogIn } from 'lucide-react';
+import { Home, Clock, FileText, LogIn, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -20,6 +20,10 @@ const Header = () => {
               <Home size={20} />
               <span>Home</span>
             </Link>
+            <Link to="/upcoming" className="flex items-center space-x-2 text-[#28D3D1] hover:text-[#28D3D1]/80 transition-colors">
+                <Calendar size={20} />
+                <span>Upcoming Shows</span>
+            </Link>
             <Link to="/past" className="flex items-center space-x-2 text-[#28D3D1] hover:text-[#28D3D1]/80 transition-colors">
               <Clock size={20} />
               <span>Past Shows</span>
@@ -28,10 +32,10 @@ const Header = () => {
               <FileText size={20} />
               <span>Request Content</span>
             </Link>
-            <Link to="/login" className="flex items-center space-x-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#28D3D1] to-[#28D3D1]/80 text-[#0A0A1A] hover:from-[#28D3D1]/90 hover:to-[#28D3D1]/70 transition-all duration-300 shadow-lg shadow-[#28D3D1]/20">
+            {/* <Link to="/login" className="flex items-center space-x-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#28D3D1] to-[#28D3D1]/80 text-[#0A0A1A] hover:from-[#28D3D1]/90 hover:to-[#28D3D1]/70 transition-all duration-300 shadow-lg shadow-[#28D3D1]/20">
               <LogIn size={20} />
               <span>Sign In</span>
-            </Link>
+            </Link> */}
           </nav>
 
           {/* Mobile menu button */}
@@ -53,6 +57,10 @@ const Header = () => {
                 <Home size={20} />
                 <span>Home</span>
               </Link>
+              <Link to="/upcoming" className="flex items-center space-x-2 text-[#28D3D1] hover:text-[#28D3D1]/80 transition-colors">
+                <Calendar size={20} />
+                <span>Upcoming Shows</span>
+              </Link>
               <Link to="/past" className="flex items-center space-x-2 text-[#28D3D1] hover:text-[#28D3D1]/80 transition-colors">
                 <Clock size={20} />
                 <span>Past Shows</span>
@@ -61,10 +69,10 @@ const Header = () => {
                 <FileText size={20} />
                 <span>Request Content</span>
               </Link>
-              <Link to="/login" className="flex items-center space-x-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#28D3D1] to-[#28D3D1]/80 text-[#0A0A1A] hover:from-[#28D3D1]/90 hover:to-[#28D3D1]/70 transition-all duration-300 shadow-lg shadow-[#28D3D1]/20">
+              {/* <Link to="/login" className="flex items-center space-x-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#28D3D1] to-[#28D3D1]/80 text-[#0A0A1A] hover:from-[#28D3D1]/90 hover:to-[#28D3D1]/70 transition-all duration-300 shadow-lg shadow-[#28D3D1]/20">
                 <LogIn size={20} />
                 <span>Sign In</span>
-              </Link>
+        </Link>*/}
             </div>
           </div>
         )}

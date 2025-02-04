@@ -543,7 +543,7 @@ const audioRef = useRef<HTMLAudioElement | null>(null);
         </div>
       </section>
       {/* Upcoming Shows Section */}
-      <section className="container mx-auto px-4 py-16 relative">
+      {/* <section className="container mx-auto px-4 py-16 relative">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-teal-400 text-transparent bg-clip-text">
             Upcoming Shows
@@ -611,7 +611,7 @@ const audioRef = useRef<HTMLAudioElement | null>(null);
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
     </div>
     
   );
