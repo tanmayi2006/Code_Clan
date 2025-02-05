@@ -16,7 +16,6 @@ const Home: React.FC = () => {
   const [listeners, setListeners] = useState(342);
   const [showChannels, setShowChannels] = useState(false);
   const [comment, setComment] = useState('');
-  const [showTranscript, setShowTranscript] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [newChannel, setNewChannel] = useState('');
   const [newFrequency, setNewFrequency] = useState('');
@@ -25,7 +24,18 @@ const Home: React.FC = () => {
   const [joinRequestMessage, setJoinRequestMessage] = useState('');
   const [selectedTypes, setSelectedTypes] = useState(['music']);
   const [selectedDate, setSelectedDate] = useState(null);
-
+  const [transcriptLines, setTranscriptLines] = useState<{ time: string; text: string }[]>([]);
+  const [showTranscript, setShowTranscript] = useState(true);
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
   const channels = [
     { name: 'Main Channel', frequency: '98.5' },
     { name: 'Jazz Radio', frequency: '101.3' },
@@ -103,11 +113,21 @@ const audioRef = useRef<HTMLAudioElement | null>(null);
     { user: 'Mike', text: 'Can you play some jazz?', time: '10m ago' }
   ];
 
-  const transcriptLines = [
-    { time: '00:12', text: 'Welcome back to College Radio!' },
-    { time: '00:15', text: "We're playing the latest indie tracks" },
-    { time: '00:20', text: 'Coming up next: an exclusive interview' }
-  ];
+
+  useEffect(() => {
+    const socket = io("http://localhost:5000");
+
+    socket.on("transcription", (data) => {
+      if (data.text) {
+        setTranscriptLines((prev) => [
+          ...prev,
+          { time: new Date().toLocaleTimeString(), text: data.text },
+        ]);
+      }
+    });
+
+    return () => socket.disconnect();
+  }, []);
 
   const pastShows = [
     {
@@ -224,15 +244,25 @@ const audioRef = useRef<HTMLAudioElement | null>(null);
                   </h1>
                   <p className="text-gray-400 text-xl mt-2 mb-6">Broadcasting live from campus</p>
       
-      <button 
-  onClick={() => setIsPlaying(!isPlaying)}
-  className="bg-gradient-to-r from-cyan-500 to-teal-500 px-12 py-4 rounded-full hover:from-cyan-400 hover:to-teal-400 transition-all duration-300 flex items-center gap-3 font-medium shadow-[0_0_25px_rgba(0,255,255,0.3)] mx-auto text-lg"
->
-  {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-  {isPlaying ? 'Stop' : 'Play'}
-</button>
+                  <div className="items-center">
+      {/* Play/Pause Button */}
+      <button
+        onClick={togglePlay}
+        className="bg-gradient-to-r from-cyan-500 to-teal-500 px-12 py-4 rounded-full hover:from-cyan-400 hover:to-teal-400 transition-all duration-300 flex items-center gap-3 font-medium shadow-[0_0_25px_rgba(0,255,255,0.3)] mx-auto text-lg"
+      >
+        {isPlaying ? "Pause" : "Play"}
+      </button>
 
-  <audio ref={audioRef} controls={false} autoPlay />
+      {/* Styled Audio Element */}
+      <audio
+        ref={audioRef}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        controls = {false}
+        className="w-full bg-transparent"
+      />
+    </div>
+
 {/* Listeners Count */}
 <div className="flex items-center justify-center gap-2 mt-4">
                     <Users size={16} className="text-cyan-400" />
@@ -425,31 +455,28 @@ const audioRef = useRef<HTMLAudioElement | null>(null);
 
             {/* Live Transcript Section */}
             {showTranscript && (
-              <div className="w-1/2 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-[0_0_15px_rgba(0,255,255,0.1)] p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-teal-400 text-transparent bg-clip-text">
-                    Live Transcript
-                  </h3>
-                  <button 
-                    onClick={() => setShowTranscript(false)}
-                    className="p-2 rounded-lg hover:bg-white/10 transition-colors"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-                <div className="space-y-4">
-                  {transcriptLines.map((line, index) => (
-                    <div 
-                      key={index}
-                      className="p-4 bg-white/5 rounded-lg border border-white/10 hover:border-cyan-400/30 transition-colors"
-                    >
-                      <span className="text-sm text-cyan-400 block mb-1">{line.time}</span>
-                      <p className="text-gray-300">{line.text}</p>
-                    </div>
-                  ))}
-                </div>
+        <div className="w-1/2 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-[0_0_15px_rgba(0,255,255,0.1)] p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-teal-400 text-transparent bg-clip-text">
+              Live Transcript
+            </h3>
+            <button
+              onClick={() => setShowTranscript(false)}
+              className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+            >
+              X
+            </button>
+          </div>
+          <div className="space-y-4">
+            {transcriptLines.map((line, index) => (
+              <div key={index} className="p-4 bg-white/5 rounded-lg border border-white/10 hover:border-cyan-400/30 transition-colors">
+                <span className="text-sm text-cyan-400 block mb-1">{line.time}</span>
+                <p className="text-gray-300">{line.text}</p>
               </div>
-            )}
+            ))}
+          </div>
+        </div>
+      )}
           </div>
         </div>
       </section>
