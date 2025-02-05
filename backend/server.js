@@ -7,6 +7,7 @@ const loginRoutes = require('./routes/login');
 const forgotPasswordRoutes = require('./routes/forgotPassword');
 const http = require('http');
 const { Server } = require('socket.io');
+const { spawn } = require('child_process'); // Import child_process to run Python
 
 const app = express();
 const server = http.createServer(app);
@@ -39,21 +40,24 @@ app.use('/api', forgotPasswordRoutes);
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
 
-  socket.on('offer', (data) => {
-    socket.broadcast.emit('offer', data);
-  });
+  socket.on('offer', (data) => socket.broadcast.emit('offer', data));
+  socket.on('answer', (data) => socket.broadcast.emit('answer', data));
+  socket.on('candidate', (data) => socket.broadcast.emit('candidate', data));
 
-  socket.on('answer', (data) => {
-    socket.broadcast.emit('answer', data);
-  });
+  socket.on('disconnect', () => console.log('User disconnected:', socket.id));
+});
 
-  socket.on('candidate', (data) => {
-    socket.broadcast.emit('candidate', data);
-  });
+// Start transcription Python script
+const pythonProcess = spawn('python', ['transcription.py']); // Ensure 'transcription.py' is in the same folder
 
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
-  });
+pythonProcess.stdout.on('data', (data) => {
+  const transcript = data.toString().trim();
+  console.log('Transcription:', transcript);
+  io.emit('transcription', { text: transcript }); // Send transcript to all clients
+});
+
+pythonProcess.stderr.on('data', (data) => {
+  console.error(`Python Error: ${data}`);
 });
 
 // Start server
