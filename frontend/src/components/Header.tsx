@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
-import { Home, Clock, FileText, LogIn, Calendar } from 'lucide-react';
+import { Home, Clock, FileText, LogIn, Calendar,Radio } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Logo from '../assets/Logo.png';
+
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-[#0A0A1A] border-b border-[#28D3D1]/20 ">
+    <header className="bg-[#0D162B] /20 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo and site name */}
-          <div className="flex items-center space-x-4">
-            <img src="./assets/Logo.png" alt="College Radio Logo" className="w-10 h-10" />
+          <div className="flex items-center space-x-4 text-[#28D3D1]">
+            {/* <img src={Logo} alt="College Radio Logo" className="w-15 h-11" /> */}
+            <Radio size={40} className="text-[#28D3D1]" />
+            <h1 className="text-3xl font-bold text-[#28D3D1]">College Radio</h1>
           </div>
+
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">

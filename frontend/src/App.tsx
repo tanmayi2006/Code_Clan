@@ -14,6 +14,7 @@ import AdminPanel from './pages/AdminPanel';
 import RequestContent from './pages/RequestContent';
 import Preference from './pages/Preferences';
 import Upcoming from './pages/upcoming';
+import Seekbar from './components/Seekbar';
 
 function Layout({ children }) {
   const location = useLocation();

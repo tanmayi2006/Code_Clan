@@ -1,5 +1,7 @@
 import React from 'react';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin,Radio } from 'lucide-react';
+import Logo from '../assets/Logo.png';
+
 
 const Footer = () => {
   return (
@@ -8,9 +10,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and description */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <img src="./assets/Logo.png" alt="College Radio Logo" className="w-8 h-8" />
-            </div>
+            {/* <img src={Logo} alt="College Radio Logo" className="w-15 h-11" /> */}
+            <Radio size={40} className="text-[#28D3D1]" />
+            <h1 className="text-3xl font-bold text-[#28D3D1]">College Radio</h1>
             <p className="text-[#28D3D1]/80">
               Broadcasting the best college content 24/7. Your voice, your station, your community.
             </p>
