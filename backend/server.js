@@ -8,6 +8,8 @@ const forgotPasswordRoutes = require('./routes/forgotPassword');
 const http = require('http');
 const { Server } = require('socket.io');
 const { spawn } = require('child_process'); // Import child_process to run Python
+const eventRoutes = require('./routes/event');
+
 
 const app = express();
 const server = http.createServer(app);
@@ -22,7 +24,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-
+app.use('/api', eventRoutes);
 // MongoDB connection
 mongoose.connect('mongodb+srv://praneethaimandi:praneetha@college-radio.chnmb.mongodb.net/', {
   useNewUrlParser: true,

@@ -34,6 +34,7 @@ function App() {
     <BrowserRouter>
       <Layout>
         <Routes>
+        <Route path="/player" element={<Seekbar/>} />
           <Route path="/upcoming" element={<Upcoming />} />
           <Route path="/pre" element={<Preference />} />
           <Route path="/admin" element={<AdminPanel />} />
