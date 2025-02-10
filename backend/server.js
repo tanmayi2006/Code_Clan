@@ -9,6 +9,8 @@ const http = require('http');
 const { Server } = require('socket.io');
 const { spawn } = require('child_process'); // Import child_process to run Python
 const eventRoutes = require('./routes/event');
+const notificationRoutes = require('./routes/notification.js');
+
 
 
 const app = express();
@@ -25,6 +27,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api', eventRoutes);
+app.use('/api', notificationRoutes);
 // MongoDB connection
 mongoose.connect('mongodb+srv://praneethaimandi:praneetha@college-radio.chnmb.mongodb.net/', {
   useNewUrlParser: true,
@@ -61,7 +64,22 @@ pythonProcess.stdout.on('data', (data) => {
 pythonProcess.stderr.on('data', (data) => {
   console.error(`Python Error: ${data}`);
 });
+let notifications = []; // Temporary storage for notifications
 
+// API to post notification
+app.post('/api/notifications', (req, res) => {
+  const { message } = req.body;
+  if (!message) {
+    return res.status(400).json({ error: 'Message is required' });
+  }
+  notifications.push({ message });
+  res.json({ success: true, message: 'Notification added' });
+});
+
+// API to fetch notifications
+app.get('/api/notifications', (req, res) => {
+  res.json(notifications);
+});
 // Start server
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
